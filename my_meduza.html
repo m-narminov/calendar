@@ -165,24 +165,24 @@
 	  </tr>
 	</table>
 	<script>
-	  //Calendar 2018 Fiit-4
+	  //Calendar drawing script 2018 Fiit-4
 
-	    var d = new Date();
-	    var year = d.getFullYear();
-	    var month = d.getMonth();
-	    var date = d.getDate();
-      var months = ['Январь','Февраль','Март',
+	  var d = new Date();
+	  var year = d.getFullYear();
+	  var month = d.getMonth();
+	  var date = d.getDate();
+    var months = ['Январь','Февраль','Март',
 									'Апрель','Май','Июнь',
 									'Июль','Август','Сентябрь',
 									'Октябрь','Ноябрь','Декабрь'];
-	    var days = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
-	    var doc = document;
-	    var headerRows = 3;
-	    var calendar = doc.createElement("table");
-	    calendar.setAttribute("id", "calendar");
+	  var days = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+	  var doc = document;
+	  var headerRows = 3;
+	  var calendar = doc.createElement("table");
+	  calendar.setAttribute("id", "calendar");
 
-	    var insPlace = doc.getElementById("parent-cal");
-	    insPlace.appendChild(calendar);
+	  var insPlace = doc.getElementById("parent-cal");
+	  insPlace.appendChild(calendar);
 
 		function showTime(){
 			var cell = doc.getElementById("td-time");
@@ -204,44 +204,55 @@
 			setTimeout(showTime, 1000);
 		}
 
-		for(var i = 0; i < headerRows; i ++){
-			var trow = doc.createElement("tr");
+		function createCalendar(){
+			for (var i = 0; i < headerRows; i++) {
+					var trow = doc.createElement("tr");
 
-			switch(i){
-				case 0:
-          var tcell = doc.createElement("td");
-          var monthCaption = doc.createElement("span");
-					var leftBtn = doc.createElement("button");
-					var rightBtn = doc.createElement("button");
-					leftBtn.setAttribute("innerHTML", '\uf137');
-					tcell.appendChild(leftBtn);
-          monthCaption.innerHTML += months[month] + ", " + d.getFullYear();
-          tcell.appendChild(monthCaption);
-					tcell.appendChild(rightBtn);
-					tcell.setAttribute("colspan", "7");
-					tcell.setAttribute("id", "monthAndYear");
-				break;
-
-				case 1:
-					var tcell = doc.createElement("td");
-					tcell.setAttribute("colspan", "7");
-					tcell.setAttribute("id", "td-time");
-				break;
-
-				case 2:
-					for (var j = 0; j < 7; j++){
+					switch (i) {
+					case 0:
 						var tcell = doc.createElement("td");
-						tcell.innerHTML = days[j];
-						trow.appendChild(tcell);
-					}
-				break;
+						var monthCaption = doc.createElement("span");
+						var leftBtn = doc.createElement("button");
+						var rightBtn = doc.createElement("button");
+						leftBtn.setAttribute("innerHTML", '\uf137');
+						leftBtn.id = "prevMonthBtn";
+						rightBtn.id = "nextMonthBtn";
+						tcell.appendChild(leftBtn);
+						monthCaption.innerHTML += months[month] + ", " + d.getFullYear();
+						tcell.appendChild(monthCaption);
+						tcell.appendChild(rightBtn);
+						tcell.setAttribute("colspan", "7");
+						tcell.setAttribute("id", "monthAndYear");
+						break;
+
+					case 1:
+						var tcell = doc.createElement("td");
+						tcell.setAttribute("colspan", "7");
+						tcell.setAttribute("id", "td-time");
+						break;
+
+					case 2:
+						for (var j = 0; j < 7; j++) {
+							var tcell = doc.createElement("td");
+							tcell.innerHTML = days[j];
+							trow.appendChild(tcell);
+						}
+						break;
+				}
+					trow.appendChild(tcell);
+					calendar.appendChild(trow);
 			}
-			trow.appendChild(tcell);
-			calendar.appendChild(trow);
+			showTime();
 		}
-		showTime();
 
 		function fillMonth(tbl) {
+			d.setDate(1); 							//Считаем с 1 числа текущего месяца
+	  	var day = d.getDay();				//
+	  	day = (6 + day) % 7 + 1;
+	  	d.setDate(d.getDate() - day + 1 );
+
+
+
 			for (var i = 2; i < 8; i++) { //заполнение календаря числами
 				var trow = doc.createElement("tr");
 				for (var j = 0; j < 7; j++) {
@@ -273,62 +284,62 @@
 				}
 				tbl.appendChild(trow);
 			}
-
 		}
 
-	  d.setDate(1); 							//Считаем с 1 числа текущего месяца
-	  var day = d.getDay();				//
-	  day = (6 + day) % 7 + 1;
-	  d.setDate(d.getDate() - day + 1 );
-
-	  fillMonth(calendar);  //Заполняем таблицу числами
-
-		var prevM = x.getElementById('prevMonthBtn');
-		var nextM = x.getElementById('nextMonthBtn');
-
-		prevM.addEventListener("click", setPrevMonth, true);
-		nextM.addEventListener("click", setNextMonth, true);
+		function clearMonth(){
+			for(var i = 0; i < 6; i++)
+				calendar.removeChild(calendar.lastChild);
+		}
 
 		function setPrevMonth(){
-
 			if (month < 1){ //Если это январь, то уменьшить год на 1
-				year--;
-				d.setFullYear(1);
+				d.setFullYear(d.getFullYear() - 1);
+				d.setMonth(11);
 				month = 11;
 			}
 			else{
+				d.setMonth(d.getMonth() - 1);
 				month--;
 			}
-			var currCal = x.getElementById('calendar');
 														//сменить текущий месяц на предыдущий
-
-
-		  for (var i = 2; i < 8; i++) {
-				for (var j = 0; j < 7; j++) { //заполнить числа предыдущего месяца
-					//var daysOfMonth =
-					currCal.children[0].children[i].children[j].innerHTML = day;
-				}
-			}
+			clearMonth();
+			fillMonth(calendar);
 
 			var s = months[month] + ' ' + year;
-			x.getElementById('monthAndYear').innerHTML = s.toString();
+			doc.getElementById('monthAndYear').innerHTML = s.toString();
 		}
 
 		function setNextMonth(){
-
-
 			if(month > 10){ //Если это декабрь, то увеличить год на 1
-				year++;
+				d.setFullYear(d.getFullYear() + 1);
+				d.setMonth(0);
 				month = 0;
 			}
 			else{
+				d.setMonth(d.getMonth() + 1);
 				month++;
 			}
-			//fillMonth();
+
+			clearMonth();
+			fillMonth(calendar);
 
 			var s = months[month] + ' ' + year;
-			x.getElementById('monthAndYear').innerHTML = s.toString();
+			doc.getElementById('monthAndYear').innerHTML = s.toString();
 		}
+
+
+		createCalendar();
+		fillMonth(calendar);  //Заполняем таблицу числами
+
+		var prevM = doc.getElementById('prevMonthBtn');
+		var nextM = doc.getElementById('nextMonthBtn');
+
+		if (prevM)
+			prevM.addEventListener("click", setPrevMonth, true);
+
+		if (nextM)
+			nextM.addEventListener("click", setNextMonth, true);
+
 
 	  /*   ***3 способ***
 		var calendar = document.getElementById('calendar');
@@ -340,11 +351,6 @@
 			row.children[6].classList.add("holydays");
 
 	  }*/
-
-		//1
-	  //Числа из других месяцев сделать бледными
-	  //Выделить текущую дату
-	  //красные дни в сб, вс
 		//2 СПОСОБ
 		//используя rows[].cells[]
 		//+ сделать часы и кнопки < & >
