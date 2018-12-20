@@ -1,3 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    align-content: center;
+}
+
 a{
   cursor: pointer;
   text-decoration: none;
@@ -12,14 +21,25 @@ img{
   height: 50%;
 }
 
-#menu{
+main {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0 auto;
+}
+
+main > * {
+    width: 100%;
+}
+
+#menu {
   background-color: #000;
   height: 35px;
   width: 100%;
+  padding: 5px;
 }
 
 #menu td{
-  font: 14px sans-serif;
+  font: 16px sans-serif;
   font-weight: bold;
   text-transform: uppercase;
   color: #fff;
@@ -50,7 +70,7 @@ img{
   margin: 0;
   width: 40px;
   vertical-align: top;
-  
+
 }
 
 #copyr td{
@@ -58,29 +78,36 @@ img{
   margin: 10px;
 }
 
+
 #calendar{                  /*Правила для календаря*/
   height: 400px;
   width: 400px;
   border: solid 1px #000;
   border-spacing: 0px;
-	font-family: Sans-serif;
+  font-family: Sans-serif;
 }
 
-#monthAndYear{
-  min-width: 200px;
-  text-align: center;
+#prevMonthBtn:before{
+  content: "\2190";
 }
 
-#prevMonth{
-  /*border: 20px solid transparent;
-  border-right: 20px solid green;*/
-  margin-right: 20px;
+#nextMonthBtn:before{
+  content: "\2192";
 }
 
-#nextMonth{
-  /*border: 20px solid transparent;
-  border-left: 20px solid green;*/
-  margin-left: 20px;
+#monthContainer {
+	text-align: center;
+	width: 100%;
+}
+
+#monthAndYear {
+	width: 200px;
+	display: inline-block;
+}
+
+#prevMonthBtn ,#nextMonthBtn {
+	width: 40px;
+	height: 40px;
 }
 
 #td-time{
@@ -93,7 +120,8 @@ img{
 }
 
 .cal-cell{
-  border: 1px solid #000;
+  border: .1px solid #000;
+  border-collapse: collapse;
 }
 
 .today{
@@ -103,15 +131,15 @@ img{
 
 .holydays{
   color: #f00;
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .hidden-days{
   background-color: hsl(0, 2%, 65%);
-}                           
+}
 
 
-                                       /*Правила для календаря*/
+/*Правила для календаря*/
 
 .bg-img{
   background-repeat: no-repeat;
